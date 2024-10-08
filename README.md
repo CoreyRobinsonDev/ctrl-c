@@ -84,3 +84,10 @@ Social media platform for ~copying~ sharing code
 | message | string |
 | action | string |
 | created_at      | timestamp  |
+
+### session
+| column          | type           |
+|-----------------|----------------|
+| id              | int            |
+| user | user(id) |
+
