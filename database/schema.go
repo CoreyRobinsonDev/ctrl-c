@@ -1,6 +1,0 @@
-package database
-
-func Setup() {
-
-}
-
