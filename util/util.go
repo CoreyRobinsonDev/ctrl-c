@@ -2,6 +2,7 @@ package util
 
 import (
 	"bufio"
+	"database/sql"
 	"errors"
 	"log/slog"
 	"net/http"
@@ -25,6 +26,7 @@ func Dotenv(variable string) (string, error) {
 
 	return "", errors.New("variable " + variable + " does not exist")
 }
+
 
 func SetMiddleware(router http.Handler, middlewares ...http.HandlerFunc) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {

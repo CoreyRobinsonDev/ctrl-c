@@ -1,8 +1,8 @@
 package main
 
 import (
-	"ctrl-c/database"
 	"ctrl-c/middleware"
+	"ctrl-c/routes"
 	"log/slog"
 	"net/http"
 
@@ -13,12 +13,10 @@ import (
 
 
 func main() {
-	db := database.Open()
-	defer db.Close()
 	router := http.NewServeMux()
 	port := u.Unwrap(u.Dotenv("PORT"))
 
-	router.HandleFunc("GET /users/{userId}", test)
+	router.HandleFunc("GET /health", routes.Health)
 
 	server := http.Server {
 		Addr: port, 
@@ -30,10 +28,3 @@ func main() {
 	server.ListenAndServe()
 }
 
-
-
-func test(res http.ResponseWriter, req *http.Request) {
-	userId := req.PathValue("userId")
-
-	res.Write([]byte("User Id: " + userId))
-}
