@@ -1,47 +1,36 @@
 package main
 
 import (
+	"ctrl-c/database"
 	"ctrl-c/middleware"
-	"flag"
 	"log/slog"
 	"net/http"
-	"os"
+
+	u "ctrl-c/util"
+
+	_ "github.com/lib/pq"
 )
 
 
 func main() {
+	db := database.Open()
+	defer db.Close()
 	router := http.NewServeMux()
-	port := flag.String("port", ":1337", "server listening port")
-	flag.Parse()
+	port := u.Unwrap(u.Dotenv("PORT"))
 
 	router.HandleFunc("GET /users/{userId}", test)
 
 	server := http.Server {
-		Addr: *port, 
-		Handler: SetMiddleware(router,
+		Addr: port, 
+		Handler: u.SetMiddleware(router,
 			middleware.LogRequest,
 		),
 	}
-	slog.Info("server started on port " + *port)
+	slog.Info("server started on port " + port)
 	server.ListenAndServe()
 }
 
-func SetMiddleware(router http.Handler, middlewares ...http.HandlerFunc) http.HandlerFunc {
-	return func(res http.ResponseWriter, req *http.Request) {
-		defer router.ServeHTTP(res, req)
-		for _, mw := range middlewares {
-			mw(res, req)
-		}
-	}
-}
 
-func Expect[T any](val T, err error) T {
-	if err != nil {
-		slog.Error(err.Error())
-		os.Exit(1)
-	}
-	return val
-}
 
 func test(res http.ResponseWriter, req *http.Request) {
 	userId := req.PathValue("userId")
