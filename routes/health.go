@@ -10,24 +10,28 @@ import (
 
 type health struct {
 	Status string `json:"status"`
-	Downstream string `json:"downstream"`
+	Downstream struct {
+		Status string `json:"status"`
+	} `json:"downstream"`
 	Timestamp time.Time `json:"timestamp"`
 }
 
-type db struct {
-	Status
-}
+
 func Health(res http.ResponseWriter, req *http.Request) {
-	status := health{"UP", "", time.Now()}
+	resObj := new(health)
 	db := database.Open()
 	defer db.Close()
 
+	resObj.Status = "UP"
+	resObj.Timestamp = time.Now()
+
 	if err := db.Ping(); err != nil {
-		status.Downstream = "DOWN"
+		resObj.Downstream.Status = "DOWN"
 	} else {
-		status.Downstream = "UP"
+		resObj.Downstream.Status = "UP"
 	}
-	bytes := util.Unwrap(json.Marshal(status))
+
+	bytes := util.Unwrap(json.Marshal(resObj))
 	res.Header().Set("Content-Type", "application/json")
 	res.Write(bytes)
 }
