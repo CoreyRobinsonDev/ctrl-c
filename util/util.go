@@ -2,7 +2,6 @@ package util
 
 import (
 	"bufio"
-	"database/sql"
 	"errors"
 	"log/slog"
 	"net/http"

@@ -5,15 +5,20 @@ import (
 	"ctrl-c/util"
 	"encoding/json"
 	"net/http"
+	"time"
 )
 
 type health struct {
 	Status string `json:"status"`
 	Downstream string `json:"downstream"`
+	Timestamp time.Time `json:"timestamp"`
 }
 
+type db struct {
+	Status
+}
 func Health(res http.ResponseWriter, req *http.Request) {
-	status := health{"UP", ""}
+	status := health{"UP", "", time.Now()}
 	db := database.Open()
 	defer db.Close()
 
