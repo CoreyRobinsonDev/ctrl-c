@@ -1,11 +1,10 @@
 package main
 
 import (
-	"ctrl-c/middleware"
-	"ctrl-c/routes"
 	"log/slog"
 	"net/http"
 
+	"ctrl-c/routes"
 	u "ctrl-c/util"
 
 	_ "github.com/lib/pq"
@@ -21,7 +20,6 @@ func main() {
 	server := http.Server {
 		Addr: port, 
 		Handler: u.SetMiddleware(router,
-			middleware.LogRequest,
 		),
 	}
 	slog.Info("server started on port " + port)

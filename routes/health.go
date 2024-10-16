@@ -34,4 +34,5 @@ func Health(res http.ResponseWriter, req *http.Request) {
 	bytes := util.Unwrap(json.Marshal(resObj))
 	res.Header().Set("Content-Type", "application/json")
 	res.Write(bytes)
+	util.LogRequest(res, req, http.StatusOK)
 }

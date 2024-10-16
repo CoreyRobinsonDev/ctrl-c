@@ -9,6 +9,15 @@ import (
 	"strings"
 )
 
+
+func LogRequest(res http.ResponseWriter, req *http.Request, statusCode int) {
+	slog.Info("request", 
+		slog.Int("status", statusCode),
+		slog.String("method", req.Method),
+		slog.String("url", req.URL.Path),
+	)
+}
+
 func Dotenv(variable string) (string, error) {
 	file := Unwrap(os.Open(".env"))
 	reader := bufio.NewScanner(file)
