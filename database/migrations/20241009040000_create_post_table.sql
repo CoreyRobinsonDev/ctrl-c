@@ -1,7 +1,8 @@
 -- +goose Up
 create table post (
 	id serial primary key,
-	user_id int references "user"(id),
+	user_id int references "user"(id)
+		on delete cascade,
 	description char(256),
 	snippet_id int references snippet(id),
 	stars int default 0,

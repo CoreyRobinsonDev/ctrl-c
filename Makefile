@@ -14,3 +14,6 @@ dbc: dbo
 
 dbu: dbo
 	@goose -dir $(PWD)/database/migrations postgres "postgres://$(PG_USERNAME):$(PG_PASSWORD)@$(PG_HOST):$(PG_PORT)/ctrl" up
+
+dbd: dbo
+	@goose -dir $(PWD)/database/migrations postgres "postgres://$(PG_USERNAME):$(PG_PASSWORD)@$(PG_HOST):$(PG_PORT)/ctrl" down
